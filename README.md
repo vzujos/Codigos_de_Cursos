@@ -1,2 +1,5 @@
 # Codigos_de_Cursos
-Repositorio para guardar los códigos de cada curso (desde 2026-2 (sólo del último año xd))
+
+Repositorio para guardar los códigos de cada curso.
+
+Actualmente, solo estan los codigos del semestre 2026-2
