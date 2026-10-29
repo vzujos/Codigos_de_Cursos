@@ -160,16 +160,19 @@ rho C_p ((T_(i,j)^(t+1)-T_(i,j)^t)/(Delta t) +  (psi_(i,j+1)^(t+1) - psi_(i,j-1)
 $
 
 
+*Resultados*
 
+1. Campos de temperatura y velocidad
 
-== Resultados
+Viendo los mapas de temperatura superpuestos con los vectores de velocidad (Figuras 2, 3 y 4), se nota al tiro cómo se arman las corrientes superficiales. El fluido sale cascando desde el centro —que es donde la fuente de calor está pegando con todo— hacia las paredes laterales que están mucho más frías. Esto calza perfecto con la teoría del efecto Marangoni: como el coeficiente térmico de tensión superficial ($partial sigma_s"/"partial T_s$) es negativo para los tres metales, la tensión superficial es más alta en las zonas frías y termina "tirando" del fluido hacia los lados. Físicamente, el comportamiento tiene caleta de sentido.
 
-Los campos de temperatura $T(x,y)$ con el campo de velocidades $(v_x,v_y)$, la función de corriente $psi(x,y)$ y la vorticidad $omega_z (x,y)$ se obtienen para los tres materiales en las iteraciones {50, 100, 150 y 200}
+2. Función de corriente
 
-Los mapas de temperatura acoplados al campo vectorial (Figuras 2, 3 y 4) muestran la correcta formación de corrientes superficiales divergentes. Como se esperaba, el fluido se desplaza desde el centro caliente (donde actúa el arco eléctrico) hacia las paredes frías, impulsado por un gradiente térmico lateral $partial T"/"partial x$. Esto sucede porque los tres metales poseen un coeficiente de tensión superficial térmico negativo ($partial sigma_s"/"partial T_s < 0$), lo que induce una tracción hacia las zonas de mayor tensión superficial (menor temperatura)
+En los gráficos de contorno de la función de corriente $psi$ (Figuras 5, 6 y 7) se arman dos mansas celdas de recirculación convectiva. Son totalmente simétricas respecto al centro pero giran al revés, ocupando toda la pileta de metal líquido. Si comparamos los tres casos, el Acero 1040 es el que tiene las curvas de nivel más apretadas; o sea, los gradientes espaciales de $psi$ son mucho más brígidos ahí, lo que significa que el acero desarrolla caudales y velocidades macroscópicas bastante mayores que el aluminio o el latón.
 
-Los contornos de la función de corriente $psi$ (Figuras 5, 6 y 7) evidencian la consolidación de dos macro-celdas de recirculación (vórtices convectivos) simétricas pero con giro opuesto, que abarcan todo el dominio. El acero presenta gradientes espaciales de $psi$ más densos debido a que desarrolla las mayores velocidades macroscópicas.
+3. Vorticidad
 
+Acá en las Figuras 8, 9 y 10 es donde más se agradece haber arreglado la condición de borde (al sacarle la condición de pared de Thom a la superficie libre). Queda clarísimo que la vorticidad $omega_z$ se genera a full en la pura superficie, justo debajo de donde el gradiente térmico es más violento. Desde ahí, este cortante se empieza a difundir hacia el fondo impulsado por la advección y la difusividad viscosa. Viendo los colores de la escala divergente, la vorticidad del Acero y el Latón se dispara mal, alcanzando magnitudes absolutas por sobre los 6000 y 8000 $s^(-1)$, mientras que el Aluminio nada que ver, se queda en valores súper bajos. Esto nos confirma empíricamente que las aleaciones como el acero, al tener una sensibilidad térmica mucho más negativa, arman un motor de Marangoni cuático en comparación al resto.
 #pagebreak()
 *1. Campos de temperatura y velocidad*
 
