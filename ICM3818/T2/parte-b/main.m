@@ -1,40 +1,17 @@
-% =========================================================================
-%  TAREA 2 - PARTE B
-%  Convección de Marangoni en pileta de metal fundido 2D
-%
-%  Esquema: COMPLETAMENTE IMPLÍCITO en el campo escalar
-%    - Advección: implícita con coeficientes congelados en v^n (upwind)
-%    - Difusión:  implícita
-%    - Velocidades: explícitas (del paso anterior, desde psi^n)
-%
-%  Esto garantiza estabilidad incondicional para cualquier CFL de advección.
-%  La matriz del sistema es diagonalmente estricta (M-matrix) en cada nodo,
-%  por lo que el GS converge siempre.
-%
-%  Esquema para T e ω:
-%    phi^{n+1} diag(i,j) = phi^n(i,j)/dt + q/(ρCp) [sólo T]
-%            + (α o ν)/dy² * (phi^{n+1}(i-1,j) vecinos ya actualizados)
-%            + ...
-%
-%  donde diag(i,j) = 1/dt + |ax| + |ay| + 2*(α o ν)/dx² + 2*(α o ν)/dy²
-%  con ax = vx/dy, ay = vy/dx (términos de advección upwind).
-%
-%  Poisson para psi: SOR con ω_SOR = 1.5
-% =========================================================================
 
 % -------- Parámetros de la malla ----------------------------------------
-Nx = 32;          % nodos reales en x
-Ny = 32;          % nodos reales en y
+Nx = 32;
+Ny = 32;
 Lx = 50e-3;       % largo [m]
 Ly = 20e-3;       % alto  [m]
 dz = 1e-3;        % espesor [m]
 
-dx = Lx / Nx;     % 1.5625e-3 m
-dy = Ly / Ny;     % 6.25e-4  m
+dx = Lx / Nx;
+dy = Ly / Ny;
 
 % Con nodos fantasmas: fila/col 1 y Nxt/Nyt son fantasmas
-Nxt = Nx + 2;   % 34
-Nyt = Ny + 2;   % 34
+Nxt = Nx + 2;
+Nyt = Ny + 2;
 
 % -------- Parámetros temporales -----------------------------------------
 dt      = 0.005;
@@ -42,7 +19,9 @@ MaxStep = 200;
 Times   = [50 100 150 200];
 
 % -------- Parámetros iterativos -----------------------------------------
-MaxIt_T   = 5000;   MaxIt_w   = 5000;   MaxIt_psi = 5000;
+MaxIt_T   = 5000;
+MaxIt_w   = 5000;
+MaxIt_psi = 5000;
 tol_T     = 1e-3;   % K
 tol_w     = 1e-6;   % 1/s
 tol_psi   = 1e-8;   % m^2/s
@@ -176,10 +155,6 @@ for m = 1:3
             end
         end
 
-        % ==============================================================
-        % PASO 2: Condiciones de borde de vorticidad
-        % ==============================================================
-
         % Paredes sólidas: condición de Thom  w = -2*psi_interior/h^2
         w(2, 2:Nxt-1)      = -2.0 * psi(3, 2:Nxt-1)      / dy^2; % inferior
         w(2:Nyt-1, 2)      = -2.0 * psi(2:Nyt-1, 3)      / dx^2; % izquierda
@@ -191,12 +166,6 @@ for m = 1:3
             w(Nyt-1, j) = -(dsdT/mu_m) * dTdx_surf - 2.0*psi(Nyt-2, j)/dy^2;
         end
 
-        % ==============================================================
-        % PASO 3: Vorticidad — GS completamente implícito
-        %
-        % Mismo esquema frozen-coefficient que T pero sin fuente.
-        % BC ya fijadas: sólo se actualiza el interior i=3:Nyt-2, j=3:Nxt-2
-        % ==============================================================
         w_old = w;
 
         for iter = 1:MaxIt_w
@@ -226,10 +195,6 @@ for m = 1:3
             end
         end
 
-        % ==============================================================
-        % PASO 4: Función de corriente — Poisson con SOR
-        %   Lap(psi) = -w^{n+1},  psi=0 en bordes reales
-        % ==============================================================
         for iter = 1:MaxIt_psi
             psi_prev = psi;
             for i = 3:Nyt-2

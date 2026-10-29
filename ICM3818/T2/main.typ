@@ -67,9 +67,9 @@ Las propiedades de cada material a la temperatura de derretimiento $T_m$ se incl
       [Aluminio 2024-T6],
       [Latón C26000],
     ),
-    [Densidad de masa $rho$ \[kg/m³\]], [7850], [2780], [8530],
-    [Conductividad térmica $k$ [W/mK]], [50.7], [151], [120],
-    [Temperatura de derretimiento [°C]], [1521], [638], [965],
+    [Densidad de masa $rho$ \[kg/m³\]], [7850], [2780 (2391)], [8530],
+    [Conductividad térmica $k$ [W/mK]], [50.7], [151 (89.3)], [120],
+    [Temperatura de derretimiento [°C]], [1521], [638 (660.32)], [965],
 
     
   ),
@@ -88,15 +88,16 @@ Las propiedades de cada material a la temperatura de derretimiento $T_m$ se incl
       [Aluminio 2024-T6],
       [Latón C26000],
     ),
-    [Calor específico $C_p$ \[J/kgK\]], [], [], [],
-    [Viscosidad dinámica $mu$ \[mPa·s\]], [], [], [],
-    [Viscosidad cinemática $nu$ \[m²/s\]], [], [], [],
-    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [], [], [],
+    [Calor específico $C_p$ \[J/kgK\]], [], [1127], [],
+    [Viscosidad dinámica $mu$ \[mPa·s\]], [], [1.344], [],
+    [Viscosidad cinemática $nu$ \[m²/s\]], [], [5.621 $dot 10^(-4)$], [],
+    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [], [-0.1297], [],
     
   ),
   caption: [Propiedades buscadas de metales a la temperatura de derretimiento $T_m$ .],
 )<tab:props_2>
 
+Aluminio obtenido de @leitner2017
 
 #pagebreak()
 = Formulación matemática
@@ -194,58 +195,58 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
 *1. Campos de temperatura y velocidad*
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/T_vel_m1_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m1_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m1_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m1_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/T_vel_m2_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m2_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m2_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m2_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/T_vel_m3_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m3_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m3_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/T_vel_m3_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
@@ -255,59 +256,59 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
 
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/psi_m1_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m1_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m1_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m1_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
 )
 
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/psi_m2_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m2_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m2_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m2_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/psi_m3_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m3_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m3_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/psi_m3_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
@@ -316,65 +317,65 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
 *3. Vorticidad*
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/omega_m1_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m1_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m1_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m1_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/omega_m2_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m2_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m2_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m2_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(
-  columns: 2,
-  rows: 2,
+  columns: 1,
+  rows: 4,
   [#image(
       "assets/fotos/omega_m3_t50.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m3_t100.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m3_t150.png",
-      width: 100%,)
+      width: 73%,)
   ],[#image(
       "assets/fotos/omega_m3_t200.png",
-      width: 100%,)
+      width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
   
 #pagebreak()
 
-#bibliography("bibliography.bib")
+#bibliography("bibliography.yml", style:"ieee")
 
 #v(2em)
 #set heading(numbering: none)

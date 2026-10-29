@@ -1,0 +1,15 @@
+leitner2017:
+  type: Article
+  title: Thermophysical Properties of Liquid Aluminum
+  author:
+    - Matthias Leitner
+    - Thomas Leitner
+    - Alexander Schmon
+    - Kirmanj Aziz
+    - Gernot Pottlacher
+  date: 2017-06
+  journal: Metallurgical and Materials Transactions A
+  volume: 48
+  issue: 6
+  pages: 3036-3045
+  doi: 10.1007/s11661-017-4053-6
