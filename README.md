@@ -5,3 +5,4 @@ Repositorio para guardar los códigos de cada curso.
 Actualmente, solo estan los codigos del semestre 2026-2
 
 - ICE3031
+- ICM3818 (solo la tarea 2b)
