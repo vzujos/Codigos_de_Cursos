@@ -71,12 +71,12 @@ Las propiedades del acero se obtuvieron de @ou2018. as propiedades del Aluminio 
       [*Latón C26000*],
     ),
     [Densidad de masa $rho$ \[kg/m³\]], [7290], [2391], [7800],
-    [Conductividad térmica $k$ [W/mK]], [34], [89.3], [68],
+    [Conductividad térmica $k$ [W/(m·K)]], [34], [89.3], [68],
     [Temperatura de derretimiento $T_m$ [°C]], [1472], [660.32], [925],
 
-    [Calor específico $C_p$ \[J/kgK\]], [700.4], [1127], [480],
-    [Viscosidad dinámica $mu$ \[mPa·s\]], [0.0064], [1.344], [$approx 3.8$],
-    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [$-4dot 10^(-4)$], [$-1.3dot 10^(-4)$], [$approx -3dot 10^(-4) *$],
+    [Calor específico $C_p$ \[J/(kg·K)\]], [700.4], [1127], [480],
+    [Viscosidad dinámica $mu$ \[Pa·s\]], [$6.4dot 10^(-3)$], [$1.3dot 10^(-3)$], [$approx 3.8 dot 10^(-3)$],
+    [$partial sigma_s \/ partial T_s$ \[N/(m·K)\]], [$-4dot 10^(-4)$], [$-1.3dot 10^(-4)$], [$approx -3dot 10^(-4) *$],
     
   ),
   caption: [Propiedades buscadas de metales a la temperatura de derretimiento $T_m$ en fase líquida. ($"Nota"^*$: $partial sigma_s"/"partial T_s$ para el Latón corresponde al valor del cobre puro).],
@@ -165,13 +165,10 @@ $
 == Resultados
 
 Los campos de temperatura $T(x,y)$ con el campo de velocidades $(v_x,v_y)$, la función de corriente $psi(x,y)$ y la vorticidad $omega_z (x,y)$ se obtienen para los tres materiales en las iteraciones {50, 100, 150 y 200}
-.
-Los gráficos se incluirán una vez generados los archivos de imagen. A modo de referencia, se describen los fenómenos esperados:
 
-- El gradiente térmico generado por la fuente puntual central induce, a través del efecto Marangoni (@eq:bc2), un flujo superficial _desde_ el centro _hacia_ los bordes (dado que $partial sigma_s \/ partial T_s < 0$ para los tres materiales: zona caliente → menor $sigma_s$ → flujo hacia zona fría).
-- La vorticidad $omega$ alcanza sus valores máximos en la superficie libre, donde actúa el esfuerzo de Marangoni, y se difunde hacia el interior según la @eq:vorticity.
-- La función de corriente $psi$ muestra dos celdas convectivas simétricas respecto al eje central $x = L_x\/2$, con sentidos de giro opuestos.
-- El acero 1040, con mayor viscosidad ($nu approx 8.6 times 10^(-7)$ m²/s) y mayor $|partial sigma_s\/partial T_s|$, presenta convección más intensa que el aluminio y el latón.
+Los mapas de temperatura acoplados al campo vectorial (Figuras 2, 3 y 4) muestran la correcta formación de corrientes superficiales divergentes. Como se esperaba, el fluido se desplaza desde el centro caliente (donde actúa el arco eléctrico) hacia las paredes frías, impulsado por un gradiente térmico lateral $partial T"/"partial x$. Esto sucede porque los tres metales poseen un coeficiente de tensión superficial térmico negativo ($partial sigma_s"/"partial T_s < 0$), lo que induce una tracción hacia las zonas de mayor tensión superficial (menor temperatura)
+
+Los contornos de la función de corriente $psi$ (Figuras 5, 6 y 7) evidencian la consolidación de dos macro-celdas de recirculación (vórtices convectivos) simétricas pero con giro opuesto, que abarcan todo el dominio. El acero presenta gradientes espaciales de $psi$ más densos debido a que desarrolla las mayores velocidades macroscópicas.
 
 #pagebreak()
 *1. Campos de temperatura y velocidad*
@@ -193,7 +190,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:Tm1>
 
 #subpar.grid(
   columns: 1,
@@ -212,7 +209,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Aluminio 2024 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:Tm2>
 
 #subpar.grid(
   columns: 1,
@@ -231,7 +228,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:Tm3>
 
 #pagebreak()
 *2. Función de corriente*
@@ -254,7 +251,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:psi1>
 
 
 #subpar.grid(
@@ -274,7 +271,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:psi2>
 
 #subpar.grid(
   columns: 1,
@@ -293,7 +290,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Función de corriente $psi$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:psi3>
 
 #pagebreak()
 *3. Vorticidad*
@@ -315,7 +312,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Acero 1040 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:w1>
 
 #subpar.grid(
   columns: 1,
@@ -334,7 +331,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:w2>
 
 #subpar.grid(
   columns: 1,
@@ -353,7 +350,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       width: 73%,)
   ],
   caption: [Vorticidad $omega_z$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
-)
+)<fig:w3>
   
 #pagebreak()
 

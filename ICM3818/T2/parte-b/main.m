@@ -21,23 +21,23 @@ Times   = [50 100 150 200];
 MaxIt_T   = 5000;
 MaxIt_w   = 5000;
 MaxIt_psi = 5000;
-tol_T     = 1e-7;   % K
-tol_w     = 1e-7;   % 1/s
-tol_psi   = 1e-7;   % m^2/s
+tol_T     = 1e-8;   % K
+tol_w     = 1e-8;   % 1/s
+tol_psi   = 1e-8;   % m^2/s
 omega_SOR = 1.5;    % factor de relajación para SOR (psi)
 
 % -------- Propiedades de los 3 materiales (Alineado con Tabla 1) --------
 mat_names = {'Acero 1040', 'Aluminio 2024-T6', 'Latón C26000'};
 
-K       = [50.7,  151,   120  ];   % W/(m K)
-Cp      = [470,   875,   377  ];   % J/(kg K)
-Rho_liq = [7850,  2780,  8530 ];   % kg/m^3 (Corregido para coincidir con la teoría)
-Tm_C    = [1521,  638,   965  ];   % °C
+K       = [34, 89.3, 68];      % W/(m K)
+Cp      = [700.4, 1127, 480];  % J/(kg K)
+Rho_liq = [7290, 2391, 7800];  % kg/m^3 (Corregido para coincidir con la teoría)
+Tm_C    = [1472, 660.32, 925]; % °C
 Tm_K    = Tm_C + 273.15;
 
-mu_dyn    = [6.0e-3, 1.2e-3, 3.5e-3];    % Pa·s
+mu_dyn    = [6.4e-3, 1.3e-3, 3.8e-3];    % Pa·s
 nu        = mu_dyn ./ Rho_liq;           % m^2/s
-dsigma_dT = [-4.0e-4, -1.5e-4, -1.3e-4]; % N/(m K)
+dsigma_dT = [-4.0e-4, -1.3e-4, -3.0e-4]; % N/(m K)
 Alpha     = K ./ Rho_liq ./ Cp;          % m^2/s
 
 % -------- Fuente de calor ------------------------------------------------
@@ -200,9 +200,6 @@ for m = 1:3
             end
         end
 
-        % ==============================================================
-        % Verificación y guardado
-        % ==============================================================
         if any(isnan(T(:))) || any(isnan(w(:))) || any(isnan(psi(:)))
             fprintf('  WARNING: NaN detectado en paso %d.\n', istep);
             break
