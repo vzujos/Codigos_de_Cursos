@@ -13,3 +13,54 @@ leitner2017:
   issue: 6
   pages: 3036-3045
   doi: 10.1007/s11661-017-4053-6
+
+ou2018:
+  type: Article
+  title: Fusion zone geometries, cooling rates and solidification parameters during wire arc additive manufacturing
+  author:
+    - Ou, Wenmin
+    - Mukherjee, Tuhin
+    - Knapp, Gerald L.
+    - Wei, Yanhong
+    - DebRoy, T.
+  date: 2018-12
+  journal: International Journal of Heat and Mass Transfer
+  volume: 127
+  pages: 1084-1094
+  doi: 10.1016/j.ijheatmasstransfer.2018.08.111
+
+
+gress2021:
+  type: Article
+  title: Vertical continuous compound casting of copper aluminum bilayer rods
+  author:
+    - Greß, Thomas
+    - Glück Nardi, Vanessa
+    - Schmid, Simon
+    - Hoyer, Julika
+    - Rizaiev, Yevgen
+    - Boll, Torben
+    - Seils, Sascha
+    - Tonn, Babette
+    - Volk, Wolfram
+  date: 2021-02
+  journal: Journal of Materials Processing Technology
+  volume: 288
+  pages: 116854
+  doi: 10.1016/j.jmatprotec.2020.116854
+
+
+glucknardi2023:
+  type: Article
+  title: Fast reactive interdiffusion between solid brass and liquid aluminium
+  author:
+    - Glück Nardi, Vanessa
+    - Greß, Thomas
+    - Tonn, Babette
+    - Schmidt, Harald
+    - Volk, Wolfram
+  date: 2023-12
+  journal: Results in Materials
+  volume: 20
+  pages: 100471
+  doi: 10.1016/j.rinma.2023.100471

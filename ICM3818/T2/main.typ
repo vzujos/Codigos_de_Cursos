@@ -50,11 +50,14 @@ A partir del código en Matlab visto en clases (Clase 11 Bloque I), para la Caja
     
     + La vorticidad $omega$ (15 pts)
     
-    #v(2em)
 
+#line(length:100%)
+#v(2em)
 *Respuesta*
 
-Las propiedades de cada material a la temperatura de derretimiento $T_m$ se incluyen en la @tab:props y @tab:props_2, donde se conservaron las propiedades entregadas de densidad, conductividad térmica y temperatura de derretimiento, y se agrega el resto *FALTA CITAR*. 
+Las propiedades de cada material a la temperatura de derretimiento $T_m$ (para la fase líqida) se incluyen en la @tab:props, donde se reemplazaron las propiedades entregadas de densidad, conductividad térmica y temperatura de derretimiento para mantener la consistencia con el resto de propiedades según las fuentes consultadas,
+
+Las propiedades del acero se obtuvieron de @ou2018. as propiedades del Aluminio 2024-T6 corresponden a las de aluminio puro @leitner2017, y para el latón se utilizaron las propiedades del Latón C27200 a falta de datos @glucknardi2023, @gress2021.
 
 #figure(
   table(
@@ -62,45 +65,23 @@ Las propiedades de cada material a la temperatura de derretimiento $T_m$ se incl
     inset: 6pt,
     align: horizon,
     table.header(
-      [Propiedad (\@$T_m$)],
-      [Acero 1040],
-      [Aluminio 2024-T6],
-      [Latón C26000],
+      [*Propiedad (\@$T_m$)*],
+      [*Acero 1040*],
+      [*Aluminio 2024-T6*],
+      [*Latón C26000*],
     ),
-    [Densidad de masa $rho$ \[kg/m³\]], [7850], [2780 (2391)], [8530],
-    [Conductividad térmica $k$ [W/mK]], [50.7], [151 (89.3)], [120],
-    [Temperatura de derretimiento [°C]], [1521], [638 (660.32)], [965],
+    [Densidad de masa $rho$ \[kg/m³\]], [7290], [2391], [7800],
+    [Conductividad térmica $k$ [W/mK]], [34], [89.3], [68],
+    [Temperatura de derretimiento $T_m$ [°C]], [1472], [660.32], [925],
 
+    [Calor específico $C_p$ \[J/kgK\]], [700.4], [1127], [480],
+    [Viscosidad dinámica $mu$ \[mPa·s\]], [0.0064], [1.344], [$approx 3.8$],
+    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [$-4dot 10^(-4)$], [$-1.3dot 10^(-4)$], [$approx -3dot 10^(-4) *$],
     
   ),
-  caption: [Propiedades entregadas de metales a la temperatura de derretimiento $T_m$.],
+  caption: [Propiedades buscadas de metales a la temperatura de derretimiento $T_m$ en fase líquida. ($"Nota"^*$: $partial sigma_s"/"partial T_s$ para el Latón corresponde al valor del cobre puro).],
 )<tab:props>
 
-
-#figure(
-  table(
-    columns: (auto, auto, auto, auto),
-    inset: 6pt,
-    align: horizon,
-    table.header(
-      [Propiedad (\@$T_m$)],
-      [Acero 1040],
-      [Aluminio 2024-T6],
-      [Latón C26000],
-    ),
-    [Calor específico $C_p$ \[J/kgK\]], [], [1127], [],
-    [Viscosidad dinámica $mu$ \[mPa·s\]], [], [1.344], [],
-    [Viscosidad cinemática $nu$ \[m²/s\]], [], [5.621 $dot 10^(-4)$], [],
-    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [], [-0.1297], [],
-    
-  ),
-  caption: [Propiedades buscadas de metales a la temperatura de derretimiento $T_m$ .],
-)<tab:props_2>
-
-Aluminio obtenido de @leitner2017
-
-#pagebreak()
-= Formulación matemática
 
 *Ecuaciones gobernantes*
 
@@ -110,6 +91,8 @@ $
 v_x = 1/rho pdv(psi, y), quad v_y = -1/rho pdv(psi, x) \
  quad omega_z = pdv(v_y,x) - pdv(v_x,y) = - 1/rho nabla^2 psi
 $<eq:def_psiomega>
+
+#pagebreak()
 
 El transporte de vorticidad, que proviene del rotor de la ecuación de Navier-Stokes, queda como:
 $
@@ -134,7 +117,6 @@ $
 rho C_p lr((pdv(T,t) + 1/rho pdv(psi, y) pdv(T,x) - 1/rho pdv(psi, x) pdv(T,y))) = k nabla^2 T + dot(q)_c
 $<eq:calor>
 
-#pagebreak()
 *Condiciones de borde*
 
 En las paredes sólidas (borde inferior y laterales), hay velocidad nula, vorticidad constante y flujo de calor nulo:
@@ -229,7 +211,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
       "assets/fotos/T_vel_m2_t200.png",
       width: 73%,)
   ],
-  caption: [Temperatura $T$ y velocidad $vb(v)$ para el Aluminio 2024-T6 en las iteraciones [50, 100, 150 y 200].],
+  caption: [Temperatura $T$ y velocidad $vb(v)$ para el Aluminio 2024 en las iteraciones [50, 100, 150 y 200].],
 )
 
 #subpar.grid(

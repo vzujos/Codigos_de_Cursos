@@ -1,4 +1,3 @@
-
 % -------- Parámetros de la malla ----------------------------------------
 Nx = 32;
 Ny = 32;
@@ -22,27 +21,27 @@ Times   = [50 100 150 200];
 MaxIt_T   = 5000;
 MaxIt_w   = 5000;
 MaxIt_psi = 5000;
-tol_T     = 1e-3;   % K
-tol_w     = 1e-6;   % 1/s
-tol_psi   = 1e-8;   % m^2/s
+tol_T     = 1e-7;   % K
+tol_w     = 1e-7;   % 1/s
+tol_psi   = 1e-7;   % m^2/s
 omega_SOR = 1.5;    % factor de relajación para SOR (psi)
 
-% -------- Propiedades de los 3 materiales -------------------------------
+% -------- Propiedades de los 3 materiales (Alineado con Tabla 1) --------
 mat_names = {'Acero 1040', 'Aluminio 2024-T6', 'Latón C26000'};
 
 K       = [50.7,  151,   120  ];   % W/(m K)
 Cp      = [470,   875,   377  ];   % J/(kg K)
-Rho_liq = [6980,  2400,  7900 ];   % kg/m^3
+Rho_liq = [7850,  2780,  8530 ];   % kg/m^3 (Corregido para coincidir con la teoría)
 Tm_C    = [1521,  638,   965  ];   % °C
 Tm_K    = Tm_C + 273.15;
 
 mu_dyn    = [6.0e-3, 1.2e-3, 3.5e-3];    % Pa·s
-nu        = mu_dyn ./ Rho_liq;            % m^2/s
+nu        = mu_dyn ./ Rho_liq;           % m^2/s
 dsigma_dT = [-4.0e-4, -1.5e-4, -1.3e-4]; % N/(m K)
 Alpha     = K ./ Rho_liq ./ Cp;          % m^2/s
 
 % -------- Fuente de calor ------------------------------------------------
-Q    = 200;                    % W
+Q    = 200;                   % W
 qvol = Q / (dx * dy * dz);    % W/m^3
 
 % La fuente se coloca en el PRIMER NODO INTERIOR bajo la superficie libre
@@ -84,11 +83,8 @@ for m = 1:3
 
     for istep = 1:MaxStep
 
-        % ==============================================================
-        % Velocidades del paso anterior (explícitas desde psi^n)
-        % ==============================================================
-        vx = zeros(Nyt, Nxt);   % vx = dpsi/dy
-        vy = zeros(Nyt, Nxt);   % vy = -dpsi/dx
+        vx = zeros(Nyt, Nxt);   % u = dpsi/dy
+        vy = zeros(Nyt, Nxt);   % v = -dpsi/dx
         for i = 2:Nyt-1
             for j = 2:Nxt-1
                 vx(i,j) =  (psi(i+1,j) - psi(i-1,j)) / (2*dy);
@@ -96,19 +92,7 @@ for m = 1:3
             end
         end
 
-        % ==============================================================
-        % PASO 1: Temperatura — GS completamente implícito
-        %
-        % Esquema upwind frozen-coefficient implícito:
-        %   ρCp * (T^{n+1} - T^n)/dt
-        %   + ρCp * vx^n*(T^{n+1}_{i,j} - T^{n+1}_{i∓1,j})/dy  (upwind)
-        %   + ρCp * vy^n*(T^{n+1}_{i,j} - T^{n+1}_{i,j∓1})/dx  (upwind)
-        %   = k*Lap(T^{n+1}) + q
-        %
-        % => diag(i,j)*T^{n+1}(i,j) = rhs + [coeff vecinos]*T^{n+1}(vecinos)
-        % La diagonal incluye 1/dt + |ax| + |ay| + 2α/dx² + 2α/dy²
-        % => diagonalmente dominante => GS converge siempre
-        % ==============================================================
+
         T_old = T;
 
         for iter = 1:MaxIt_T
@@ -120,15 +104,16 @@ for m = 1:3
 
             for i = 2:Nyt-1
                 for j = 2:Nxt-1
-                    % Coeficientes de advección upwind (frozen en v^n)
-                    ax_p = max( vx(i,j), 0) / dy;   % contribución de T(i-1)
-                    ax_m = max(-vx(i,j), 0) / dy;   % contribución de T(i+1)
-                    ay_p = max( vy(i,j), 0) / dx;   % contribución de T(j-1)
-                    ay_m = max(-vy(i,j), 0) / dx;   % contribución de T(j+1)
+                    % Coeficientes de advección upwind corregidos:
+                    % vx interactúa con dx (índice j), vy interactúa con dy (índice i)
+                    u_p = max( vx(i,j), 0) / dx;   % Viento desde la izq, asimila T(i, j-1)
+                    u_m = max(-vx(i,j), 0) / dx;   % Viento desde la der, asimila T(i, j+1)
+                    v_p = max( vy(i,j), 0) / dy;   % Viento desde abajo, asimila T(i-1, j)
+                    v_m = max(-vy(i,j), 0) / dy;   % Viento desde arriba, asimila T(i+1, j)
 
                     % Diagonal estrictamente dominante
-                    diag_T = 1/dt + ax_p + ax_m + ay_p + ay_m ...
-                             + 2*alpha/dy^2 + 2*alpha/dx^2;
+                    diag_T = 1/dt + u_p + u_m + v_p + v_m ...
+                             + 2*alpha/dx^2 + 2*alpha/dy^2;
 
                     % Término independiente
                     rhs_T = T_old(i,j)/dt;
@@ -136,12 +121,12 @@ for m = 1:3
                         rhs_T = rhs_T + qvol/(rho*cp_m);
                     end
 
-                    % GS: usa vecinos ya actualizados (i-1,j) y (i,j-1)
+                    % GS: usa vecinos ya actualizados
                     T(i,j) = ( rhs_T ...
-                        + (alpha/dy^2 + ax_p) * T(i-1,j) ...   % k+1
-                        + (alpha/dy^2 + ax_m) * T(i+1,j) ...   % k
-                        + (alpha/dx^2 + ay_p) * T(i,j-1) ...   % k+1
-                        + (alpha/dx^2 + ay_m) * T(i,j+1) ...   % k
+                        + (alpha/dy^2 + v_p) * T(i-1,j) ...   % k+1 (Abajo)
+                        + (alpha/dy^2 + v_m) * T(i+1,j) ...   % k   (Arriba)
+                        + (alpha/dx^2 + u_p) * T(i,j-1) ...   % k+1 (Izq)
+                        + (alpha/dx^2 + u_m) * T(i,j+1) ...   % k   (Der)
                         ) / diag_T;
                 end
             end
@@ -155,15 +140,15 @@ for m = 1:3
             end
         end
 
-        % Paredes sólidas: condición de Thom  w = -2*psi_interior/h^2
+
         w(2, 2:Nxt-1)      = -2.0 * psi(3, 2:Nxt-1)      / dy^2; % inferior
         w(2:Nyt-1, 2)      = -2.0 * psi(2:Nyt-1, 3)      / dx^2; % izquierda
         w(2:Nyt-1, Nxt-1)  = -2.0 * psi(2:Nyt-1, Nxt-2)  / dx^2; % derecha
 
-        % Superficie libre (Marangoni): w = -(dσ/dT)/μ * dT/dx - 2*psi_int/dy²
+        % Superficie libre (Marangoni puramente térmico - Thom fue removido)
         for j = 2:Nxt-1
             dTdx_surf = (T(Nyt-1, j+1) - T(Nyt-1, j-1)) / (2*dx);
-            w(Nyt-1, j) = -(dsdT/mu_m) * dTdx_surf - 2.0*psi(Nyt-2, j)/dy^2;
+            w(Nyt-1, j) = -(dsdT/mu_m) * dTdx_surf; 
         end
 
         w_old = w;
@@ -172,21 +157,22 @@ for m = 1:3
             w_prev = w;
             for i = 3:Nyt-2
                 for j = 3:Nxt-2
-                    ax_p = max( vx(i,j), 0) / dy;
-                    ax_m = max(-vx(i,j), 0) / dy;
-                    ay_p = max( vy(i,j), 0) / dx;
-                    ay_m = max(-vy(i,j), 0) / dx;
+                    % Mismos coeficientes upwind corregidos que en T
+                    u_p = max( vx(i,j), 0) / dx;
+                    u_m = max(-vx(i,j), 0) / dx;
+                    v_p = max( vy(i,j), 0) / dy;
+                    v_m = max(-vy(i,j), 0) / dy;
 
-                    diag_w = 1/dt + ax_p + ax_m + ay_p + ay_m ...
-                             + 2*nu_m/dy^2 + 2*nu_m/dx^2;
+                    diag_w = 1/dt + u_p + u_m + v_p + v_m ...
+                             + 2*nu_m/dx^2 + 2*nu_m/dy^2;
 
                     rhs_w = w_old(i,j)/dt;
 
                     w(i,j) = ( rhs_w ...
-                        + (nu_m/dy^2 + ax_p) * w(i-1,j) ...   % k+1
-                        + (nu_m/dy^2 + ax_m) * w(i+1,j) ...   % k
-                        + (nu_m/dx^2 + ay_p) * w(i,j-1) ...   % k+1
-                        + (nu_m/dx^2 + ay_m) * w(i,j+1) ...   % k
+                        + (nu_m/dy^2 + v_p) * w(i-1,j) ...   % k+1 (Abajo)
+                        + (nu_m/dy^2 + v_m) * w(i+1,j) ...   % k   (Arriba)
+                        + (nu_m/dx^2 + u_p) * w(i,j-1) ...   % k+1 (Izq)
+                        + (nu_m/dx^2 + u_m) * w(i,j+1) ...   % k   (Der)
                         ) / diag_w;
                 end
             end
@@ -205,7 +191,7 @@ for m = 1:3
                     psi(i,j) = (1 - omega_SOR)*psi(i,j) + omega_SOR*psi_GS;
                 end
             end
-            % BC psi = 0 en bordes reales
+            % BC psi = 0 en contornos reales
             psi(2,:)     = 0;   psi(Nyt-1,:) = 0;
             psi(:,2)     = 0;   psi(:,Nxt-1) = 0;
 
