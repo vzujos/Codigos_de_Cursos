@@ -56,9 +56,6 @@ A partir del código en Matlab visto en clases (Clase 11 Bloque I), para la Caja
 
 Las propiedades de cada material a la temperatura de derretimiento $T_m$ se incluyen en la @tab:props y @tab:props_2, donde se conservaron las propiedades entregadas de densidad, conductividad térmica y temperatura de derretimiento, y se agrega el resto *FALTA CITAR*. 
 
-Las propiedades adicionales se obtienen de @Brandes1992Smithells e @Iida1988Physical y se resumen en la siguiente tabla:
-
-
 #figure(
   table(
     columns: (auto, auto, auto, auto),
@@ -93,8 +90,8 @@ Las propiedades adicionales se obtienen de @Brandes1992Smithells e @Iida1988Phys
     ),
     [Calor específico $C_p$ \[J/kgK\]], [], [], [],
     [Viscosidad dinámica $mu$ \[mPa·s\]], [], [], [],
-    [Viscosidad cinemática $nu$ \[m²/s\]], [$8.60 times 10^(-7)$], [$5.00 times 10^(-7)$], [$4.43 times 10^(-7)$],
-    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [$-4.0 times 10^(-4)$], [$-1.5 times 10^(-4)$], [$-1.3 times 10^(-4)$],
+    [Viscosidad cinemática $nu$ \[m²/s\]], [], [], [],
+    [$partial sigma_s \/ partial T_s$ \[N(m·K)\]], [], [], [],
     
   ),
   caption: [Propiedades buscadas de metales a la temperatura de derretimiento $T_m$ .],
@@ -104,7 +101,7 @@ Las propiedades adicionales se obtienen de @Brandes1992Smithells e @Iida1988Phys
 #pagebreak()
 = Formulación matemática
 
-== Ecuaciones gobernantes
+*Ecuaciones gobernantes*
 
 El flujo incompresible en 2D se describe con la función de corriente $psi$ y vorticidad $omega_z$, como:
 
@@ -127,73 +124,65 @@ La ecuación de calor, que viene del balance de energía considerando una fuente
 
 $
 rho C_p ( pdv(T, t) + (vb(v)dot grad) T ) = k laplacian T + dot(q)_c + mu  underbrace(2 dot(epsilon)_(x y)(pdv(v_x,y) + pdv(v_y,x)), approx 0) \
-rho C_p ( pdv(T, t) + (vb(v)dot grad) T ) = k laplacian T + dot(q)_c
-$
 
-
-$
 rho C_p lr((pdv(T,t) + v_x pdv(T,x) + v_y pdv(T,y))) = k nabla^2 T + dot(q)_c
+$
+
+
+$
+rho C_p lr((pdv(T,t) + 1/rho pdv(psi, y) pdv(T,x) - 1/rho pdv(psi, x) pdv(T,y))) = k nabla^2 T + dot(q)_c
 $<eq:calor>
 
-== Condiciones de borde
+#pagebreak()
+*Condiciones de borde*
 
-En las paredes sólidas (borde inferior y laterales), hay velocidad nula, flujo de calor nulo (aislantes), y vorticidad constante:
+En las paredes sólidas (borde inferior y laterales), hay velocidad nula, vorticidad constante y flujo de calor nulo:
 $
 v_x = lr(pdv(psi,y) mid(|))_(x=0,x=L_x, y=0) = v_y = lr(-pdv(psi,x) mid(|))_(x=0,x=L_x,y=0) = 0 \
-lr(pdv(psi,y,2) mid(|))_(x=0,x=L_x, y=0) = lr(pdv(psi,x,2) mid(|))_(x=0,x=L_x,y=0) = 0 \
+w_z |_(x=0) = - (2 psi |_(x=0^+)) / (Delta x^2), quad w_z |_(x=L_x) = - (2 psi |_(x=L_x^-)) / (Delta x^2), quad w_z |_(y=0) = - (2 psi |_(y=0^+)) / (Delta y^2)  \
 lr(pdv(T,x)|)_(x=0,x=L_x) = lr(pdv(T,y)|)_(y=0) = 0
-$
+$<eq:bc1>
 
-En la superficie libre (borde superior), hay un esfuerzo de corte tangencial igual al gradiente de tensión superficial, que depende de la temperatura:
-$
-lr( pdv(v_x,y) |)_(y = L_y) = lr( pdv(psi,y,2) |)_(y = L_y) = lr( 1/mu pdv(sigma_s, T_s) pdv(T,x) |)_(y = L_y)
-$<eq:bc2>
+En la superficie libre (borde superior), hay un esfuerzo de corte tangencial igual al gradiente de tensión superficial, que depende de la temperatura, y no hay velocidad vertical ni flujo de calor:
 
-Y no hay velocidad vertical: $v_y=0$. Con eso, se tiene que
 $
   w_z |_(y=L_y) = - lr(pdv(v_x,y) |)_(y=L_y) = - lr(1/mu pdv(sigma_s, T_s) pdv(T,x) |)_(y=L_y)
-$<eq:bc_vorticity_top>
-===
-
-
-Para las tres paredes sólidas restantes (con $v_x = v_y = 0$), la condición de vorticidad de Thom es:
-
+$<eq:bc2>
 $
-omega|_"pared" = - 2 psi_"interior" / h^2
-$<eq:bc_vorticity_wall>
-
-En las cuatro paredes se impone aislación térmica ($partial T \/ partial n = 0$), implementada con nodos fantasmas: $T_0 = T_1$.
-
-La fuente de calor puntual $dot(q)=200 "W"$  se aplica en el centro horizontal de la superficie libre (esquemáticamente, como indica la @fig:1).
-
-
-== Discretización numérica
-(esta parte creo que esta lista)
-
-Se emplean $N_x = N_y = 32$ nodos reales más los nodos fantasmas en la frontera. El paso de tiempo es $Delta t = 0.005$ s y se realizan 200 iteraciones. Tanto para la discretización de @eq:def_psiomega, @eq:vorticity como para @eq:calor  se emplea un esquema implícito centrado en espacio.
-
-*Temperatura*:
-
-$
-rho C_p ((T_(i,j)^(t+1)-T_(i,j)^t)/(Delta t) +  u_(i, j)^(t+1)(T_(i+1,j)^(t+1) - T_(i-1,j)^(t+1))/(2 Delta x) + v_(i, j)^(t+1) (T_(i,j+1)^(t+1) - T_(i,j-1)^(t+1))/(2 Delta y)) = \ k/(Delta x^2) ( T_(i+1,j)^(t+1) - 2T_(i,j)^(t+1) + T_(i-1,j)^(t+1)) + k/(Delta y^2) ( T_(i,j+1)^(t+1) - 2T_(i,j)^(t+1) + T_(i,j-1)^(t+1)) + dot(q)_(i,j)
+v_y|_(y=L_y)=lr(-pdv(psi,x) mid(|))_(y=L_y) = 0, quad lr(pdv(T,y)|)_(y=L_y) = 0
 $
 
-*Vorticidad*:
 
-$
-rho (omega_(i,j)^(t+1) - omega_(i,j)^t) / (Delta t) + (psi_(i,j+1)^(t+1) - psi_(i,j-1)^(t+1))/(2 Delta y) (omega_(i+1,j)^(t+1) - omega_(i-1,j)^(t+1))/(2 Delta x) - (psi_(i+1,j)^(t+1) - psi_(i-1,j)^(t+1))/(2 Delta x) (omega_(i,j+1)^(t+1) - omega_(i,j-1)^(t+1))/(2 Delta y) = \ mu/(Delta x^2) ( omega_(i+1,j)^(t+1) - 2omega_(i,j)^(t+1) + omega_(i-1,j)^(t+1)) + mu/(Delta y^2) ( omega_(i,j+1)^(t+1) - 2omega_(i,j)^(t+1) + omega_(i,j-1)^(t+1)) \
-$
+#pagebreak()
+*Discretización numérica*
 
-*Función de corriente*:
+Se usan $N_x = N_y = 32$ nodos reales más los nodos fantasmas en la frontera. El paso de tiempo es $Delta t = 0.005$ s y se realizan 200 iteraciones para la fuente de calor $dot(q)=200 "W"$. Tanto para la discretización de @eq:def_psiomega, @eq:vorticity como para @eq:calor  se emplea un esquema implícito centrado en espacio.
+
+Función de corriente @eq:def_psiomega:
 
 $
 w_(i, j)^t = - ( psi_(i+1,j)^(t) - 2 psi_(i,j)^(t) + psi_(i-1,j)^(t) ) / (rho Delta x^2) - ( psi_(i,j+1)^(t) - 2 psi_(i,j)^(t) + psi_(i,j-1)^(t)) / (rho Delta y^2)
 $
 
+Vorticidad @eq:vorticity:
+
+$
+rho (omega_(i,j)^(t+1) - omega_(i,j)^t) / (Delta t) + (psi_(i,j+1)^(t+1) - psi_(i,j-1)^(t+1))/(2 Delta y) (omega_(i+1,j)^(t+1) - omega_(i-1,j)^(t+1))/(2 Delta x) - (psi_(i+1,j)^(t+1) - psi_(i-1,j)^(t+1))/(2 Delta x) (omega_(i,j+1)^(t+1) - omega_(i,j-1)^(t+1))/(2 Delta y) = \ mu/(Delta x^2) ( omega_(i+1,j)^(t+1) - 2omega_(i,j)^(t+1) + omega_(i-1,j)^(t+1)) + mu/(Delta y^2) ( omega_(i,j+1)^(t+1) - 2omega_(i,j)^(t+1) + omega_(i,j-1)^(t+1)) \
+$
+
+Temperatura @eq:calor:
+
+$
+rho C_p ((T_(i,j)^(t+1)-T_(i,j)^t)/(Delta t) +  (psi_(i,j+1)^(t+1) - psi_(i,j-1)^(t+1))/(rho 2 Delta y)(T_(i+1,j)^(t+1) - T_(i-1,j)^(t+1))/(2 Delta x) - (psi_(i+1,j)^(t+1) - psi_(i-1,j)^(t+1))/(rho 2 Delta x) (T_(i,j+1)^(t+1) - T_(i,j-1)^(t+1))/(2 Delta y)) = \ k/(Delta x^2) ( T_(i+1,j)^(t+1) - 2T_(i,j)^(t+1) + T_(i-1,j)^(t+1)) + k/(Delta y^2) ( T_(i,j+1)^(t+1) - 2T_(i,j)^(t+1) + T_(i,j-1)^(t+1)) + dot(q)_(i,j)
+$
+
+
+
+
 == Resultados
 
-Los campos de temperatura $T(x,y)$ con el campo de velocidades $(v_x,v_y)$, la función de corriente $psi(x,y)$ y la vorticidad $omega_z(x,y)$ se obtienen para los tres materiales en los pasos de tiempo 50, 100, 150 y 200, ejecutando el código MATLAB de la Parte b) (`parte-b/main.m`) seguido de `parte-b/guardar-fotos.m`.
-
+Los campos de temperatura $T(x,y)$ con el campo de velocidades $(v_x,v_y)$, la función de corriente $psi(x,y)$ y la vorticidad $omega_z (x,y)$ se obtienen para los tres materiales en las iteraciones {50, 100, 150 y 200}
+.
 Los gráficos se incluirán una vez generados los archivos de imagen. A modo de referencia, se describen los fenómenos esperados:
 
 - El gradiente térmico generado por la fuente puntual central induce, a través del efecto Marangoni (@eq:bc2), un flujo superficial _desde_ el centro _hacia_ los bordes (dado que $partial sigma_s \/ partial T_s < 0$ para los tres materiales: zona caliente → menor $sigma_s$ → flujo hacia zona fría).
@@ -201,6 +190,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
 - La función de corriente $psi$ muestra dos celdas convectivas simétricas respecto al eje central $x = L_x\/2$, con sentidos de giro opuestos.
 - El acero 1040, con mayor viscosidad ($nu approx 8.6 times 10^(-7)$ m²/s) y mayor $|partial sigma_s\/partial T_s|$, presenta convección más intensa que el aluminio y el latón.
 
+#pagebreak()
 *1. Campos de temperatura y velocidad*
 
 #subpar.grid(
@@ -260,6 +250,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
   caption: [Temperatura $T$ y velocidad $vb(v)$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
 
+#pagebreak()
 *2. Función de corriente*
 
 
@@ -321,6 +312,7 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
   caption: [Función de corriente $psi$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
 
+#pagebreak()
 *3. Vorticidad*
 
 #subpar.grid(
