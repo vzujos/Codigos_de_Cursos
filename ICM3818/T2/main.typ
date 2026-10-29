@@ -379,23 +379,6 @@ Los gráficos se incluirán una vez generados los archivos de imagen. A modo de 
   ],
   caption: [Vorticidad $omega_z$ para el Latón C26000 en las iteraciones [50, 100, 150 y 200].],
 )
-
-
-== Código MATLAB
-
-El código completo de la simulación se encuentra en `parte-b/main.m` y el código de generación de gráficos en `parte-b/guardar-fotos.m`.
-
-#show raw: set text(size: 7.5pt)
-
-=== `parte-b/main.m`
-
-```Matlab
-% Ver archivo parte-b/main.m (incluido en el directorio del proyecto)
-```
-
-#colbreak()
-
-
   
 #pagebreak()
 
@@ -409,28 +392,17 @@ El código completo de la simulación se encuentra en `parte-b/main.m` y el cód
 
 Se debe declarar el uso indicando la versión de la herramienta, y el link al chat. Alternativamente si su uso es acotado, declarar el prompt y la respuesta.
 
-Método de Chorin:
-Se discretiza N-S, y se separa en 2 ecuaciones
-$
-i)& quad (u^* -u^t)/(Delta t) = - (grad u^t) u^t + nu laplacian u^t, quad div u^* != 0 \
-i i)& quad (u^(t+1) -u^*)/(Delta t) = - 1/rho grad p \
-i i i) & quad (cancel(grad u^(t+1)) -grad u^*)/(Delta t) = - 1/rho laplacian p quad -> quad laplacian p = rho/(Delta t) grad u^* \
-$
-Ahora se actualiza i)
-
-$u^* = u^t + Delta t (- (grad u^t) u^t + nu laplacian u^t), t=0$
-
-Ahora se actualiza iii)
-
-$p$
-
-Ahora se actualiza ii)
-
-$u^(t+1) = u^*  - (Delta t)/rho grad p$
 #pagebreak()
 
-== Código Matlab (Clase 11 Bloque 1)
+== Código Matlab entregado (Clase 11 Bloque 1)
 
 #show raw: set text(size: 8pt)
-
 #raw(read("parte-b/clase.m"), lang: "Matlab")
+
+#pagebreak()
+
+== Código MATLAB
+
+El código completo de la simulación se divide en un archivo  `main.m` que resuelve las ecuaciones discretizadas sobre el dominio, y el archivo `guardar-fotos.m` que genera y guarda los gráficos.
+
+#raw(read("parte-b/main.m"), lang: "Matlab")
