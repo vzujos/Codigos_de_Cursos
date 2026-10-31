@@ -1,6 +1,6 @@
 // VARIABLES
 
-#let date = "29 de octubre de 2026"
+#let date = "31 de octubre de 2026"
 
 #let author = "Vicente Zúñiga"
 #let correo = "vzj@uc.cl"

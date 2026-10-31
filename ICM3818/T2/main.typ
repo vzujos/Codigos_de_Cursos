@@ -162,17 +162,9 @@ $
 
 *Resultados*
 
-1. Campos de temperatura y velocidad
+De los mapas de temperatura superpuestos la velocidad (Figuras 2, 3 y 4) se logra observar el desarrollo de corrientes. El fluido se desplaza desde el centro del dominio hacia las paredes laterales que están más frías. Como el coeficiente térmico de tensión superficial ($partial sigma_s"/" partial T_s$) es negativo para los tres casos, la tensión superficial aumenta en las zonas de menor temperatura y esto hace que se arrastre el fluido hacia los extremos laterales de la superficie libre.
+Por otro lado, en las Figuras 8, 9 y 10 se aprecia que la vorticidad $omega_z$ se concentra principalmente en la superficie libre, que es donde existe el mayor gradiente de temperaturas. La vorticidad es simétrica con respecto al eje vertical donde se aplica la fuente de calor, pero con valores opuestos que indican el sentido de giro del fluido. Ocurre lo mismo para la función de corriente $psi$ en las Figuras 5, 6 y 7, que es simétrica con respecto al eje vertical y tiene valores opuestos a ambos lados del eje.
 
-Viendo los mapas de temperatura superpuestos con los vectores de velocidad (Figuras 2, 3 y 4), se nota al tiro cómo se arman las corrientes superficiales. El fluido sale cascando desde el centro —que es donde la fuente de calor está pegando con todo— hacia las paredes laterales que están mucho más frías. Esto calza perfecto con la teoría del efecto Marangoni: como el coeficiente térmico de tensión superficial ($partial sigma_s"/"partial T_s$) es negativo para los tres metales, la tensión superficial es más alta en las zonas frías y termina "tirando" del fluido hacia los lados. Físicamente, el comportamiento tiene caleta de sentido.
-
-2. Función de corriente
-
-En los gráficos de contorno de la función de corriente $psi$ (Figuras 5, 6 y 7) se arman dos mansas celdas de recirculación convectiva. Son totalmente simétricas respecto al centro pero giran al revés, ocupando toda la pileta de metal líquido. Si comparamos los tres casos, el Acero 1040 es el que tiene las curvas de nivel más apretadas; o sea, los gradientes espaciales de $psi$ son mucho más brígidos ahí, lo que significa que el acero desarrolla caudales y velocidades macroscópicas bastante mayores que el aluminio o el latón.
-
-3. Vorticidad
-
-Acá en las Figuras 8, 9 y 10 es donde más se agradece haber arreglado la condición de borde (al sacarle la condición de pared de Thom a la superficie libre). Queda clarísimo que la vorticidad $omega_z$ se genera a full en la pura superficie, justo debajo de donde el gradiente térmico es más violento. Desde ahí, este cortante se empieza a difundir hacia el fondo impulsado por la advección y la difusividad viscosa. Viendo los colores de la escala divergente, la vorticidad del Acero y el Latón se dispara mal, alcanzando magnitudes absolutas por sobre los 6000 y 8000 $s^(-1)$, mientras que el Aluminio nada que ver, se queda en valores súper bajos. Esto nos confirma empíricamente que las aleaciones como el acero, al tener una sensibilidad térmica mucho más negativa, arman un motor de Marangoni cuático en comparación al resto.
 #pagebreak()
 *1. Campos de temperatura y velocidad*
 
@@ -363,21 +355,27 @@ Acá en las Figuras 8, 9 y 10 es donde más se agradece haber arreglado la condi
 #set heading(numbering: none)
 = Anexo<anexo>
 
-== Utilización de herramientas de IA
-
-Se debe declarar el uso indicando la versión de la herramienta, y el link al chat. Alternativamente si su uso es acotado, declarar el prompt y la respuesta.
-
-#pagebreak()
-
 == Código Matlab entregado (Clase 11 Bloque 1)
 
 #show raw: set text(size: 8pt)
+
+
+#columns(2)[
 #raw(read("parte-b/clase.m"), lang: "Matlab")
+]
 
 #pagebreak()
 
 == Código MATLAB
 
-El código completo de la simulación se divide en un archivo  `main.m` que resuelve las ecuaciones discretizadas sobre el dominio, y el archivo `guardar-fotos.m` que genera y guarda los gráficos.
+El código completo de la simulación se divide en un archivo main.m que resuelve las ecuaciones discretizadas sobre el dominio, y el archivo guardar_fotos.m que genera y guarda los gráficos.
+
+#columns(2)[
+Código main.m:
 
 #raw(read("parte-b/main.m"), lang: "Matlab")
+#colbreak()
+
+Código guardar_fotos.m:
+#raw(read("parte-b/guardar_fotos.m"), lang: "Matlab")
+]
