@@ -49,6 +49,9 @@ Se considera el aire como un fluido newtoniano incompresible y se usan las ecuac
 
 Calcular: Campo de presión en el dominio fluido $p(x,y)$, campo vectorial de velocidades $(u, v)$ superpuesto al campo de presión, líneas de corriente del flujo de aire $psi(x,y)$, campo de vorticidad $omega(x,y)$
 
+#pagebreak()
+
+El profe recomendó usar el método de chorin para Navier-Stokes. Partir con un sólido rígido, y luego cuando funcione, tratar de hacerlo elástico, y viscoelástico.
 /*
 #pagebreak()
 
