@@ -1,11 +1,11 @@
 // VARIABLES
 
-#let date = "29 de octubre de 2026"
+#let date = "29 de noviembre de 2026"
 
 #let author = "Vicente Zúñiga"
 #let correo = "vzj@uc.cl"
-#let titulo = "Tarea 2"
-#let tema = "Parte b)"
+#let titulo = "Tarea 3"
+#let tema = ""
 
 
 // CURSO

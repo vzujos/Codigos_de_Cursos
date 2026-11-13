@@ -9,7 +9,7 @@
   )[
   #v(8em)
   #title()
-  *#tema*\
+  //*#tema*\
   #author\
   #date
   #line(length: 100%)
