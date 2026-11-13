@@ -34,6 +34,8 @@ Cada directorio y archivo tiene el siguiente propósito:
 
 Antes de implementar funcionalidades de Typst, consulta la documentación oficial disponible en:
 
-https://typst.app/docs/
+- https://typst.app/docs/
+- https://github.com/typst/hayagriva/blob/main/docs/file-format.md
+- https://lilaq.org/docs/quickstart
 
 Esta regla es especialmente importante para las expresiones matemáticas del documento.
